@@ -26,7 +26,8 @@
 
 #ifndef __MEMSWAP_H
 #define __MEMSWAP_H
-#include <gtk/gtk.h>
 
-gint read_memswap(gulong *, gulong *, gulong *, gulong *, gulong *, gulong *);
+// mem %, swap %, mem total, mem used, swap total, swap used
+int read_memswap(unsigned long *, unsigned long *, unsigned long *, unsigned long *, unsigned long *, unsigned long *);
+
 #endif /* ndef __MEMSWAP_H */

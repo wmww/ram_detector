@@ -28,8 +28,6 @@
 #include <config.h>
 #endif
 
-#include <gtk/gtk.h>
-
 #include "memswap.h"
 
 
@@ -56,7 +54,7 @@ static unsigned long STotal = 0;
 static unsigned long SFree = 0;
 static unsigned long SUsed = 0;
 
-gint read_memswap(gulong *mem, gulong *swap, gulong *MT, gulong *MU, gulong *ST, gulong *SU)
+int read_memswap(unsigned long *mem, unsigned long *swap, unsigned long *MT, unsigned long *MU, unsigned long *ST, unsigned long *SU)
 {
     int fd;
     size_t n;
@@ -64,12 +62,12 @@ gint read_memswap(gulong *mem, gulong *swap, gulong *MT, gulong *MU, gulong *ST,
 
     if ((fd = open("/proc/meminfo", O_RDONLY)) < 0)
     {
-        g_warning("Cannot open \'/proc/meminfo\'");
+        //printf("Cannot open \'/proc/meminfo\'");
         return -1;
     }
     if ((n = read(fd, MemInfoBuf, MEMINFOBUFSIZE - 1)) == MEMINFOBUFSIZE - 1)
     {
-        g_warning("Internal buffer too small to read \'/proc/mem\'");
+        //printf("Internal buffer too small to read \'/proc/mem\'");
         close(fd);
         return -1;
     }
@@ -190,7 +188,7 @@ static int swapmode(int *retavail, int *retfree)
         kd_init = FALSE;
         if ((kd = kvm_open("/dev/null", "/dev/null", "/dev/null", 
                            O_RDONLY, "kvm_open")) == NULL) {
-            g_warning("Cannot read kvm.");
+            //printf("Cannot read kvm.");
             return -1;
         }
     }
@@ -215,7 +213,7 @@ static int swapmode(int *retavail, int *retfree)
     return(n);
 }
 
-gint read_memswap(gulong *mem, gulong *swap, gulong *MT, gulong *MU, gulong *ST, gulong *SU)
+int read_memswap(unsigned long *mem, unsigned long *swap, unsigned long *MT, unsigned long *MU, unsigned long *ST, unsigned long *SU)
 {
     int total_pages;
     int free_pages;
@@ -225,15 +223,15 @@ gint read_memswap(gulong *mem, gulong *swap, gulong *MT, gulong *MU, gulong *ST,
     int swap_free;
 
     if(GETSYSCTL("vm.stats.vm.v_page_count", total_pages)) {
-        g_warning("Cannot read sysctl \"vm.stats.vm.v_page_count\"");
+        //printf("Cannot read sysctl \"vm.stats.vm.v_page_count\"");
         return -1;
     }
     if(GETSYSCTL("vm.stats.vm.v_free_count", free_pages)) {
-        g_warning("Cannot read sysctl \"vm.stats.vm.v_free_count\"");
+        //printf("Cannot read sysctl \"vm.stats.vm.v_free_count\"");
         return -1;
     }
     if(GETSYSCTL("vm.stats.vm.v_inactive_count", inactive_pages)) {
-        g_warning("Cannot read sysctl \"vm.stats.vm.v_inactive_count\"");
+        //printf("Cannot read sysctl \"vm.stats.vm.v_inactive_count\"");
         return -1;
     }
 
@@ -292,7 +290,7 @@ static size_t STotal = 0;
 static size_t SFree = 0;
 static size_t SUsed = 0;
 
-gint read_memswap(gulong *mem, gulong *swap, gulong *MT, gulong *MU, gulong *ST, gulong *SU)
+int read_memswap(unsigned long *mem, unsigned long *swap, unsigned long *MT, unsigned long *MU, unsigned long *ST, unsigned long *SU)
 {
     int pagesize;
     size_t len;
@@ -404,7 +402,7 @@ static size_t STotal = 0;
 static size_t SFree = 0;
 static size_t SUsed = 0;
 
-gint read_memswap(gulong *mem, gulong *swap, gulong *MT, gulong *MU, gulong *ST, gulong *SU)
+int read_memswap(unsigned long *mem, unsigned long *swap, unsigned long *MT, unsigned long *MU, unsigned long *ST, unsigned long *SU)
 {
     long pagesize;
     size_t len;
@@ -477,7 +475,7 @@ void mem_init_stats()
 	kc = kstat_open();
 }
 
-gint read_memswap(gulong *mem, gulong *swap, gulong *MT, gulong *MU, gulong *ST, gulong *SU)
+int read_memswap(unsigned long *mem, unsigned long *swap, unsigned long *MT, unsigned long *MU, unsigned long *ST, unsigned long *SU)
 {
     long pagesize;
     struct anoninfo swapinfo;
